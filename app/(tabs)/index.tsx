@@ -1,11 +1,8 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { Appbar, FAB } from '@/components/customs';
+import { useSession } from '@/providers/SessionContext';
+import { useRouter } from 'expo-router';
+import { StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export default function HomeScreen() {
   return (
@@ -59,40 +56,35 @@ export default function HomeScreen() {
             </Link.Menu>
           </Link.Menu>
         </Link>
+    const { signOut } = useSession() as { signOut: any };
+  const router = useRouter();
+  const theme = useTheme();
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+  return  <>
+            <Appbar 
+              title="Home"
+              icons={[
+                { name: 'cog-outline', onPress: () => router.push('/settings')   },
+                { name: 'logout', onPress: () => signOut() },
+              ]}
+            />
+            <FAB 
+              icon="plus"
+              color= "white"
+              style={{
+                ...styles.fab,
+                backgroundColor: theme.colors.secondary,
+              }}
+              onPress={() => router.push('/item')}
+            />
+          </>;
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+  fab: {
     position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
-});
+})

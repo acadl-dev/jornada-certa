@@ -12,6 +12,8 @@ import {
   SafeAreaProvider,
 } from 'react-native-safe-area-context';
 
+import { SnackbarProvider } from '@/providers/SnackbarContext';
+import { ModalProvider } from '@/providers/ModalContext';
 import { useEffect } from 'react';
 
 export const unstable_settings = {
@@ -57,7 +59,11 @@ export default function RootLayout() {
   return  <SessionProvider>
             <PaperProvider theme={colorScheme === 'dark' ? Themes.dark : Themes.light}>
               <SafeAreaProvider>
-                <InitialLayout />
+                <SnackbarProvider>
+                  <ModalProvider>
+                    <InitialLayout />
+                  </ModalProvider>
+                </SnackbarProvider>
               </SafeAreaProvider>
             </PaperProvider>
           </SessionProvider>

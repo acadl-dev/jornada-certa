@@ -5,4 +5,7 @@ export { default as Image } from './Image';
 export { default as Text } from './Text';
 export { default as TextInput } from './TextInput';
 export { default as View } from './View';
+export { default as ForgotPassword } from './ForgotPassword';
+export { default as Modal } from './Modal';
+export { default as Snackbar } from './Snackbar';
 

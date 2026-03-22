@@ -1,7 +1,7 @@
-import { Appbar, View } from '@/components/customs';
+import { Appbar } from '@/components/customs';
 import { useSession } from '@/providers/SessionContext';
 import { useRouter } from 'expo-router';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import {
     SafeAreaView,
 } from 'react-native-safe-area-context';

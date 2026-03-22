@@ -5,6 +5,7 @@ import {
 
 import {
   Button,
+  ForgotPassword,
   Image,
   Text,
   TextInput,
@@ -15,13 +16,30 @@ import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { TextInput as TIcon } from 'react-native-paper';
 
+import { useModal } from '@/providers/ModalContext';
+import { useSnackbar } from '@/providers/SnackbarContext';
+
+
 
 export default function LoginScreen() {
-  const { signIn } = useSession() as { signIn: any };
+  //const { signIn } = useSession() as { signIn: any };
   const router = useRouter();
   const [securityState, setSecurityState] = useState(true)
-  const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const { showModal, hideModal } = useModal() as { showModal: any, hideModal: any };
+  const { showSnackbar } = useSnackbar() as { showSnackbar: any };
+  const { signIn, isLoading, forgotPassword } = useSession() as { signIn: any, isLoading: boolean, forgotPassword: any };
+
+  const handleLogin = async () => {
+    try{
+      await signIn(userName, password);
+    } catch (error) {
+      console.log('Erro no login: ', error);
+    }
+  }
+  
+
 
   return <SafeAreaView style={styles.safeArea}>
             <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
@@ -38,10 +56,9 @@ export default function LoginScreen() {
               >
                 <TextInput 
                   mode="flat"
-                  keyboardType="email-address"
-                  label="E-mail"
-                  value={email}
-                  onChangeText={(text: string) => setEmail(text)}
+                  label="Username"
+                  value={userName}
+                  onChangeText={(text: string) => setUserName(text)}
                 />
               </View>
               <View>
@@ -56,6 +73,13 @@ export default function LoginScreen() {
               </View>
               <View>
                 <Button
+                onPress={() => {
+                  showModal(
+                    <ForgotPassword 
+                      forgotPassword={forgotPassword} hideModal={hideModal} showSnackbar={showSnackbar}
+                    />
+                  );
+                }}
                 style={styles.button}
                 >Esqueci minha senha</Button>
               </View>
@@ -63,8 +87,9 @@ export default function LoginScreen() {
                 <Button
                   style={styles.button}
                   mode="contained"
-                  onPress={() => {
-                    signIn(email, password);
+                  onPress={async () => {
+                    const message = await signIn(userName, password);
+                    showSnackbar(message);
                   }}
                 >Entrar</Button>
               </View>

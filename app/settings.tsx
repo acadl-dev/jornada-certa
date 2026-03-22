@@ -3,7 +3,7 @@ import { useSession } from "@/providers/SessionContext";
 import { useRouter } from "expo-router";
 
 export default function SettingsScreen() {
-    const { signOut } = useSession() as { signOut: any };
+  const { signOut } = useSession() as { signOut: any };
   const router = useRouter();
 
   return <>
